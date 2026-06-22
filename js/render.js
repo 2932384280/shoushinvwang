@@ -1,7 +1,6 @@
-import { G, getChar, getPlace, getNation, getPlayerNation, getNationPower, getNationDistance, addLog, addCharacterLog } from './state.js';
-import { RACE_DATA, isMale, genderText, genderClass, formatWealth, getDateString, timeStr, ALL_ACHIEVEMENTS } from './data.js';
-import { applyTheme, setAutoMode, setLogSyncMode, openSaveLoad, confirmRestart } from './ui.js';
-import { showModal, closeModal } from './ui.js';
+import { G, getChar, getPlace, getNation, getPlayerNation, getNationPower, getNationDistance, addLog, addCharacterLog, getDateString, timeStr } from './state.js';
+import { RACE_DATA, isMale, genderText, genderClass, formatWealth, ALL_ACHIEVEMENTS } from './data.js';
+import { applyTheme, setAutoMode, setLogSyncMode, openSaveLoad, confirmRestart, showModal, closeModal } from './ui.js';
 
 // 定义主题常量
 const THEMES = {
