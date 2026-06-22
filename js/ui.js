@@ -44,7 +44,7 @@ export function showAvatarChangeModal() {
     });
 }
 
-// ========== 存档管理 ==========
+// ========== 存档管理界面 ==========
 export function openSaveLoad() {
     let html = '<div style="font-size:0.7em;color:var(--text-dim);margin-bottom:4px;">槽位5为自动存档</div>';
     const MAX_SLOTS = 6;
@@ -63,33 +63,9 @@ export function openSaveLoad() {
     html += '<button class="btn btn-sm" onclick="closeModal()">关闭</button>';
     showModal('📂 存档管理', html, []);
 }
-
-export function saveSlot(idx) {
-    saveToSlot(idx);
-    addLog(`💾 存档 ${idx + 1}`, 'highlight');
-    closeModal();
-    openSaveLoad();
-}
-
-export function loadSlot(idx) {
-    if (loadFromSlot(idx)) {
-        addLog(`📤 读取存档 ${idx + 1}`, 'highlight');
-        closeModal();
-        renderAll();
-        switchPage('queen');
-    } else {
-        showModal('❌ 读取失败', '存档为空或损坏。', [{ text: '知道了', action: closeModal }]);
-    }
-}
-
-export function deleteSlot(idx) {
-    if (confirm(`确定删除槽位 ${idx + 1} 的存档吗？`)) {
-        localStorage.removeItem('queen_slot_' + idx);
-        addLog(`🗑️ 删除存档 ${idx + 1}`, 'danger');
-        closeModal();
-        openSaveLoad();
-    }
-}
+export function saveSlot(idx) { saveToSlot(idx); addLog(`💾 存档 ${idx + 1}`, 'highlight'); closeModal(); openSaveLoad(); }
+export function loadSlot(idx) { if (loadFromSlot(idx)) { addLog(`📤 读取存档 ${idx + 1}`, 'highlight'); closeModal(); renderAll(); switchPage('queen'); } else { showModal('❌ 读取失败', '存档为空或损坏。', [{ text: '知道了', action: closeModal }]); } }
+export function deleteSlot(idx) { if (confirm(`确定删除槽位 ${idx + 1} 的存档吗？`)) { localStorage.removeItem('queen_slot_' + idx); addLog(`🗑️ 删除存档 ${idx + 1}`, 'danger'); closeModal(); openSaveLoad(); } }
 
 // ========== 主题 ==========
 const THEMES = { royal: { primary: '#d4a74a', secondary: '#f0d080', bg: '#1a1410' }, purple: { primary: '#a855f7', secondary: '#c084fc', bg: '#1a1025' }, ruby: { primary: '#e84393', secondary: '#fd79a8', bg: '#1a0a0a' }, emerald: { primary: '#2ecc71', secondary: '#55efc4', bg: '#0a1a0a' }, sapphire: { primary: '#3498db', secondary: '#74b9ff', bg: '#0a0a1a' } };

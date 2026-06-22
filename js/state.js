@@ -1,4 +1,4 @@
-import { pick, rand, clamp, SURNAMES, GIVEN_NAMES, RACE_DATA, RACE_KEYS, NATION_DATA, PLACE_DATA, ALL_ACHIEVEMENTS } from './data.js';
+import { pick, rand, clamp, SURNAMES, GIVEN_NAMES, RACE_DATA, RACE_KEYS, NATION_DATA, PLACE_DATA, ALL_ACHIEVEMENTS, isMale } from './data.js';
 
 // ========== 游戏状态 ==========
 export let G = {

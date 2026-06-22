@@ -3,8 +3,10 @@ import * as render from './render.js';
 import * as ui from './ui.js';
 import * as state from './state.js';
 
+// 将所有导出暴露到 window，供 HTML onclick 调用
 Object.assign(window, actions, render, ui, state);
 
+// 额外暴露常用函数（确保 HTML 中的 onclick 能找到）
 window.goToPlace = actions.goToPlace;
 window.quickGoTo = actions.quickGoTo;
 window.interactChar = actions.interactChar;
@@ -63,17 +65,22 @@ window.renderStartScreen = ui.renderStartScreen;
 window.startGame = ui.startGame;
 window.loadLastSave = ui.loadLastSave;
 
+// 页面加载后绑定事件
 document.addEventListener('DOMContentLoaded', () => {
+    // 导航栏点击
     document.querySelectorAll('.nav-item').forEach(el => {
         el.addEventListener('click', function() {
             const p = this.dataset.page;
             if (p) render.switchPage(p);
         });
     });
+    // 头像点击
     document.getElementById('avatarClickArea').addEventListener('click', () => {
         if (state.G.gameStarted) ui.showAvatarChangeModal();
     });
+    // 加载主题和成就
     ui.loadTheme();
     state.loadAchievements();
+    // 显示开始界面
     ui.renderStartScreen();
 });
