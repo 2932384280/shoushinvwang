@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover, shrink-to-fit=no">
+    <title>👑 兽世女王 · 王国风云</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+    <div id="topbar" style="display:none;">
+        <div class="left">
+            <div class="avatar-wrap" id="avatarClickArea">
+                <div class="avatar" id="headerAvatar">👑</div>
+                <div class="name-title">
+                    <div class="name" id="headerName">女王</div>
+                    <div class="title" id="headerTitle">兽世之巅</div>
+                </div>
+            </div>
+        </div>
+        <div class="right">
+            <span class="stat"><span class="icon">❤️</span><span class="val" id="hHealth">100</span><span class="hp-bar"><span class="fill" id="hpFill" style="width:100%"></span></span></span>
+            <span class="stat"><span class="icon">⚡</span><span class="val" id="hStamina">100</span><span class="stamina-bar"><span class="fill" id="staminaFill" style="width:100%"></span></span></span>
+            <span class="stat"><span class="icon">⭐</span><span class="val" id="hPrestige">20</span></span>
+            <span class="stat"><span class="icon">⚔️</span><span class="val" id="hMilitary">20</span></span>
+            <span class="stat"><span class="icon">🏛️</span><span class="val" id="hNation">王国</span></span>
+            <span class="stat"><span class="icon">💰</span><span class="val" id="hWealth">20金</span></span>
+            <span class="stat"><span class="icon">🏦</span><span class="val" id="hTreasury">60</span></span>
+            <span class="stat"><span class="icon">📅</span><span class="val" id="hDay" style="font-weight:bold;">360年1月1日</span></span>
+            <span class="date" id="headerDate" style="display:none;"></span>
+        </div>
+    </div>
+    <div id="content"></div>
+    <div id="navbar" style="display:none;">
+        <button class="nav-item active" data-page="queen"><span class="icon">👑</span>女王</button>
+        <button class="nav-item" data-page="harem"><span class="icon">💕</span>后宫</button>
+        <button class="nav-item" data-page="places"><span class="icon">🗺️</span>地点</button>
+        <button class="nav-item" data-page="nations"><span class="icon">🌍</span>国家</button>
+        <button class="nav-item" data-page="characters"><span class="icon">👥</span>角色</button>
+        <button class="nav-item" data-page="settings"><span class="icon">⚙️</span>设置</button>
+    </div>
+</div>
+<div id="modal-overlay" onclick="if(event.target===this)closeModal()">
+    <div id="modal-box">
+        <h2 id="modalTitle">📜</h2>
+        <div id="modalBody" class="modal-body"></div>
+        <div class="modal-actions" id="modalActions"></div>
+    </div>
+</div>
+
+<!-- 引用拆分后的 JS 文件（顺序依赖） -->
+<script src="js/data.js"></script>
+<script src="js/state.js"></script>
+<script src="js/actions.js"></script>
+<script src="js/render.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/events.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
