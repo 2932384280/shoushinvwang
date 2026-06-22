@@ -1,7 +1,9 @@
 import { G, getChar, getPlace, getNation, getPlayerNation, getNationPower, getNationDistance, addLog, addCharacterLog } from './state.js';
 import { pick, rand, clamp, RACE_DATA, RACE_KEYS, isMale, genderText, genderClass, formatWealth, wealthToCopper, getDateString, timeStr, ALL_ACHIEVEMENTS } from './data.js';
+import { applyTheme, setAutoMode, setLogSyncMode, openSaveLoad, confirmRestart } from './ui.js';
+import { showModal, closeModal } from './ui.js'; // 已包含
 
-// 定义主题常量（避免依赖 ui.js）
+// 定义主题常量
 const THEMES = {
     royal: { primary: '#d4a74a', secondary: '#f0d080', bg: '#1a1410' },
     purple: { primary: '#a855f7', secondary: '#c084fc', bg: '#1a1025' },
@@ -31,7 +33,6 @@ export function renderTopbar() {
 
 export function renderAll() {
     renderTopbar();
-    // 如果有当前页面，重新渲染（由 switchPage 负责）
 }
 
 export function switchPage(page) {

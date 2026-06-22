@@ -1,4 +1,4 @@
-import { pick, rand, clamp, SURNAMES, GIVEN_NAMES, RACE_DATA, RACE_KEYS, NATION_DATA, PLACE_DATA, getRaceData, getRaceEmoji, isMale, genderText, genderClass, wealthToCopper, formatWealth, addWealth, getDateString, timeStr, ALL_ACHIEVEMENTS } from './data.js';
+import { pick, rand, clamp, SURNAMES, GIVEN_NAMES, RACE_DATA, RACE_KEYS, NATION_DATA, PLACE_DATA, ALL_ACHIEVEMENTS } from './data.js';
 
 // ========== 游戏状态 ==========
 export let G = {
@@ -18,12 +18,19 @@ export let G = {
     diplomacy: { pending: null },
     haremChambers: [],
     currentPage: 'queen',
-    achievements: [] // 已解锁成就ID列表
+    achievements: []
 };
 
 let uid = () => G._nextId++;
 
-// ========== 辅助函数（依赖G） ==========
+// ========== 时间函数（依赖 G.player） ==========
+export const getDateString = () => {
+    const w = ['周一', '周二', '周三', '周四', '周五', '周六', '周日'];
+    return `兽历${G.player.year}年${G.player.month}月${G.player.day}日 ${w[(G.player.weekDay - 1) % 7]}`;
+};
+export const timeStr = () => ['🌅 晨', '☀️ 午', '🌇 昏', '🌙 夜'][G.player.period] || '晨';
+
+// ========== 辅助函数 ==========
 export const getChar = id => G.characters.find(c => c.id === id) || G.hiddenCharacters.find(c => c.id === id);
 export const getPlace = id => G.places.find(p => p.id === id);
 export const getNation = id => G.nations.find(n => n.id === id);
@@ -51,7 +58,6 @@ export const addCharacterLog = (charId, eventType, desc, isRelated) => {
 };
 export const getCharacterLogs = charId => getChar(charId)?.logs || [];
 
-// ========== 获取成年子嗣 ==========
 export function getAdultChildren() {
     return G.children.filter(c => c.age >= 16);
 }
@@ -105,7 +111,7 @@ export function generateCharacter(gender, race, nationId, ageMin, ageMax, family
         level,
         inHarem: false,
         isLover: false,
-        fertility: isMale(gender) ? rand(30, 80) : rand(20, 60), // 雄性生育力
+        fertility: isMale(gender) ? rand(30, 80) : rand(20, 60),
         pregnant: false,
         pregnancyDays: 0,
         children: 0,
@@ -311,8 +317,8 @@ export function loadAchievements() {
     }
 }
 
-// ========== 存档系统（包含hiddenCharacters，自动存档用slot 5） ==========
-const MAX_SLOTS = 6; // 0~4 手动，5 自动
+// ========== 存档系统 ==========
+const MAX_SLOTS = 6;
 export function saveToSlot(idx) {
     if (idx < 0 || idx >= MAX_SLOTS) return;
     try {
@@ -362,7 +368,7 @@ export function loadFromSlot(idx) {
         G.diplomacy = d.diplomacy || { pending: null };
         G.haremChambers = d.haremChambers || [];
         G.achievements = d.achievements || [];
-        applyTheme(G.currentTheme);
+        // 主题由外部加载，这里不调用 applyTheme
         if (!G.player.wealth) G.player.wealth = { gold: 20, silver: 0, copper: 0 };
         return true;
     } catch (e) { return false; }
@@ -374,10 +380,10 @@ export function hasAnySave() {
 }
 
 export function autoSave() {
-    if (G.autoSaveMode !== 'never') saveToSlot(5); // 自动存档专用槽位
+    if (G.autoSaveMode !== 'never') saveToSlot(5);
 }
 
-// ========== 初始化游戏 ==========
+// ========== 初始化游戏（只设置状态，不进行UI操作） ==========
 export function initGame(playerName, avatarType, avatarData, nationName, playerRace) {
     G.player.name = playerName || '女王';
     G.player.avatar = avatarType || '👑';
@@ -419,17 +425,8 @@ export function initGame(playerName, avatarType, avatarData, nationName, playerR
     if (pn && nationName?.trim()) pn.name = nationName.trim();
     G.places = [];
     for (const k in PLACE_DATA) PLACE_DATA[k].forEach(p => G.places.push({ ...p, devProgress: 0, garrison: null, explored: false }));
-    if (avatarType === 'custom' && avatarData) saveAvatarToStorage('custom', avatarData);
-    else saveAvatarToStorage('emoji', avatarType || '👑');
     addLog(`👑 你登基为 ${pn ? pn.name : '王国'} 的女王！`, 'highlight');
     addLog(`🌍 你的国家以 ${playerRace} 为主体。`, '');
     addLog('💰 货币：1金=1000银=1,000,000铜', '');
-    document.getElementById('topbar').style.display = 'flex';
-    document.getElementById('navbar').style.display = 'flex';
-    renderAll();
-    switchPage('queen');
-    autoSave();
-    const loc = pn?.environment || '北境之地';
-    const neigh = G.nations.filter(n => n.id !== pn?.id).slice(0, 3).map(n => n.name).join('、');
-    showModal('👑 兽历360年 · 新王登基', `兽历360年，${G.player.name}带领${playerRace}部族在${loc}自封为王，\n同时与邻国${neigh || '诸国'}进行了初步外交。\n\n🌱 新手引导：\n1. 点击「地点」探索王宫与王都\n2. 在「角色」页面结识臣子与兽人\n3. 在「国家」页面与其他国度建立外交\n4. 后宫、子嗣、征战……尽在掌握\n\n📌 距离近的国家可直接外交，远国需派遣使者（忠诚≥70的臣子）。\n📌 使者出访需要时间，且可能被拒绝。`, [{ text: '👑 开始统治', action: closeModal }]);
+    // UI 操作由外部调用
 }
